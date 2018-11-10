@@ -1,2 +1,2 @@
-def excluded():
-    print("This module is excluded by __all__ !")
+def func():
+    print("excluded_module.func")

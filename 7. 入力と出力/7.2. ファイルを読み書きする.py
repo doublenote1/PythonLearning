@@ -38,7 +38,7 @@ print(read_s)
 # ファイル全体をリストとして読み込み: readlines()
 with open(read_path) as f:
     read_l = f.readlines()
-print('-ファイル全体（リスト形式）-')
+print('-ファイル全体(リスト形式)-')
 print()
 print(read_l)
 print('※ リスト要素へアクセス')

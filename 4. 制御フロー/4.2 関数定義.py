@@ -1,36 +1,36 @@
-# === def / while ===
+# === 関数定義基本 ===
 
 # return 文無
 
 def print_fib(n):
-    """Print a Fibonacci series up to n."""
     a, b = 0, 1
     while a < n:
         print(a, end=' ')
         a, b = b, a + b
-    print()
 
-print_fib(2000)
+print_fib(500)  # -> 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+print()
+
 print(print_fib(0))  # return 文を持たないので None を返す
 
 # return 文有
 
 def return_fib(n):
-    """Return a list containing the Fibonacci series up to n."""
     result = []
     a, b = 0, 1
     while a < n:
         result.append(a)
-        a, b = b, a+b
+        a, b = b, a + b
     return result
 
 f100 = return_fib(100)  # return した値を返す
-print(f100)
+print(f100)  # -> [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 
 # 関数は代入できる
 
 f = print_fib
 f(100)
+print()  # -> 0 1 1 2 3 5 8 13 21 34 55 89
 print()
 
 # ===デフォルト値===
@@ -40,28 +40,31 @@ print()
 def ask_ok(prompt, answer, retries=4, reminder='Please try again!'):
     while True:
         print(prompt)
-        ok = answer
-        if ok in ('y', 'ye', 'yes'):
+        if answer in ('y', 'ye', 'yes'):
             return True
-        if ok in ('n', 'no', 'nop', 'nope'):
+        if answer in ('n', 'no', 'nop', 'nope'):
             return False
         retries = retries - 1
-        if retries < 0:
-            raise ValueError('invalid user response')
+        if retries <= 0:
+            return 'Unresolved !'
         print(reminder)
-ask_ok('Do you really want to quit?', 'y')
-ask_ok('OK to overwrite the file?', 'ye', 2)
-ask_ok('OK to overwrite the file?', 'yes', 2, 'Come on, only yes or no!')
+
+print(ask_ok('Do you really want to quit ?', 'y'))
+print()
+print(ask_ok('OK to overwrite the file ?', 'nope'))
+print()
+print(ask_ok('Will you continue ?', '??', 2, 'Come on, only yes or no!'))
 print()
 
 # デフォルト値は関数が定義された時点で初期化
 
 i = 5
+
 def f(arg=i):
     print(arg)
+
 i = 6
 f()  # -> 5
-print()
 
 # デフォルト値は関数定義時に一度しか初期化されない
 
@@ -69,11 +72,12 @@ def f(a, lst=[]):
     lst.append(a)
     return lst
 
-print(f(1), end=', ')  # -> [1]
-print(f(2), end=', ')  # -> [1, 2]
+print(f(1), end=' -> ')  # -> [1]
+print(f(2), end=' -> ')  # -> [1, 2]
 print(f(3))  # -> [1, 2, 3]
 
-# リスト・辞書・関数などの変更可能なデフォルト値を呼び出しごとに初期化したい場合
+# リスト・辞書・関数などの変更可能なデフォルト値を
+# 呼び出しごとに初期化したい場合
 
 def f(a, lst=None):
     if lst is None:
@@ -81,51 +85,55 @@ def f(a, lst=None):
     lst.append(a)
     return lst
 
-print(f(1), end=', ')  # -> [1]
-print(f(2), end=', ')  # -> [2]
+print(f(1), end=' -> ')  # -> [1]
+print(f(2), end=' -> ')  # -> [2]
 print(f(3))  # -> [3]
 print()
 
 # キーワードで引数の値を指定して設定
 
-def man(name, male=True, married=True, height=170):
+def man(name, male=True, married=True):
     if male:
-        i, p = 'He', 'His'
+        pronoun, title = "He's", "Mr."
+    elif not male and married:
+        pronoun, title = "She's", "Mrs."
     else:
-        i, p = 'She', 'Her'
+        pronoun, title = "She's", "Miss"
     if married:
-        m = 'is married'
+        m = 'is married.'
     else:
-        m = 'is not married'
-    print(p, 'name is', name + '.')
-    print(i, m, 'and', p, 'height is', height, 'cm.')
+        m = 'is not married.'
+    print(pronoun, title, name, '.')
 
-man('Kiyofumi')
-man(name='Taro')
-man(name='Yoshio',married=False)
-man(married=False, name='Hanako')
-man('Akemi', False, False)
-man('Setsuko', height=190)
-args = ('Hiromi', 'femail')
-kwargs = {'married': True, 'height': 160}
+man('Seiichi')  # -> He's Mr. Seiichi .
+man('Setsuko', False)  # -> She's Mrs. Setsuko .
+man('Misato', False, False)  # -> She's Miss Misato .
+man('Kiyofumi', married=False)  # -> He's Mr. Kiyofumi .
+man(married=False, male=False, name='Cookie')  # -> She's Miss Cookie .
+
 # 引数のアンパック
-man(*args, **kwargs)
+args = ('Hiromi', False)
+kwargs = {'married': False}
+man(*args, **kwargs)  # -> She's Miss Hiromi .
 print()
 
-# === 可変長引数（*args, **kwargs） ===
+# === 可変長引数(*args, **kwargs) ===
 
-def cheeseshop(kind, *arguments, **keywords):
-    print("-- Do you have any", kind, "?")
-    print("-- I'm sorry, we're all out of", kind)
+def zoo(kind, *arguments, **keywords):
+    print("-- 世界の", kind, " --", sep='')
+    print("-- 世の中には様々な", kind, "が存在する --", sep='')
+    str_ex = ""
     for arg in arguments:
-        print(arg)
+        str_ex += arg + "、"
+    str_ex.rstrip("、")
+    print("例えば、", str_ex, "などが挙げられる", sep='')
     print("-" * 40)
     for kw in keywords:
         print(kw, ":", keywords[kw])
 
-sentences = ["It's very runny, sir.", "It's really very, VERY runny, sir.", 'Yes, so much.']
-signature = {'shopkeeper': "Michael Palin", 'client': "John Cleese", 'sketch': "Cheese Shop Sketch"}
-cheeseshop("Limburger", *sentences, Kiyofumi='President', **signature)
+examples = ["パンダ", "チンパンジー", "ゴリラ", "ペリカン"]
+signature = {"監督": "井筒", "脚本": "野島信二"}
+zoo("動物", "猿", "豚", *examples, 社長="近藤清史", 秘書="みっちゃ", **signature)
 print()
 
 # Keyword 引数は可変長引数のあとに指定する
@@ -133,57 +141,8 @@ print()
 def concat(*args, sep="/"):
     return sep.join(args)
 
-print(concat("earth", "mars", "venus"))
-print(concat("earth", "mars", "venus", sep="."))
-print()
-
-# === ラムダ式 ===
-
-# 無名関数 = lambda 仮引数: <*argsを含む式>
-print(type(lambda x: x + 1))
-# 戻り値 = (<lambda式>)(実引数)
-print(type((lambda x: x + 1)(1)))
-print()
-
-def make_incrementor(n):
-    return lambda x: x + n
-
-f = make_incrementor(42)
-print(f(0), end=', ')
-print(f(1))
-
-value = (lambda a, b: a + b)(1, 2)
-print(value)
-print()
-
-# --- sorted() と lambda ---
-
-# sorted(iterable, key=None, reverse=False)
-# key 関数に、iterable の値を引数とする関数を設定し、
-# その戻り値を元に最終的にソートする
-
-lst = ['Charle', 'Bob', 'Alice']
-print(sorted(lst))
-print(sorted(lst, key=len))
-print(sorted(lst, key=lambda x: x[1]))
-print()
-
-# --- map() と lambda ---
-
-# map(function, iterable)
-# function に iterable の値を引数とする関数を設定し、
-# その戻り値で 各 iterable 要素を書き換える
-
-print(list(map(lambda x: x**2, range(5))))
-print()
-
-# --- filter() と lambda ---
-
-# filter(function, iterable)
-# function に iterable の値を引数とする式か関数を設定し、
-# その戻り値が True の要素だけの iterable を生成する
-
-print(list(filter(lambda x: x % 2 == 0, range(10))))
+print(concat("earth", "mars", "venus"))  # -> earth/mars/venus
+print(concat("earth", "mars", "venus", sep="."))  # -> earth.mars.venus
 print()
 
 # === ドキュメンテーション文字列 ====
@@ -192,11 +151,12 @@ def my_func():
     """\
     docstring-test
     line1"""
+
 print(my_func.__doc__)
 print(type(my_func.__doc__))
 print()
 
-# reStructuredText（reST）スタイル
+# reStructuredText(reST)スタイル
 
 def func_rest(arg1, arg2):
     """Summary line.
@@ -258,7 +218,8 @@ def str_multiply(x: str, y: int = 5) -> str:
 print(str_multiply('Oh! '))
 
 # 関数アノテーションは __annotations__ 属性に辞書型として格納されている
-print(type(str_multiply.__annotations__))
-print(str_multiply.__annotations__)
-print(str_multiply.__annotations__['x'])
+print(type(str_multiply.__annotations__))  # -> <class 'dict'>
+dic_a = str_multiply.__annotations__
+print(dic_a)  # -> {'x': <class 'str'>, 'y': <class 'int'>, 'return': <class 'str'>}
+print(str_multiply.__annotations__['x'])  # -> <class 'str'>
 print()

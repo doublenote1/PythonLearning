@@ -1,2 +1,2 @@
-def included():
-    print("This module is included by __all__ !")
+def func():
+    print("included_module.func")

@@ -83,5 +83,5 @@ json_dumps = json.dumps(json_dict,
                         sort_keys=True,
                         ensure_ascii=False
                         )
-print('-JSON形式（整形済み）-')
+print('-JSON形式(整形済み)-')
 print(json_dumps)

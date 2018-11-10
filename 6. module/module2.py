@@ -1,2 +1,2 @@
-def mod2_func():
-    print('mod2_func')
+def func1():
+    print('module2.func1')

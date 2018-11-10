@@ -1,2 +1,2 @@
-def package_mod2_func():
-    print('package_mod2_func')
+def func1():
+    print('package_module2.func1')
