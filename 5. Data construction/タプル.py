@@ -1,12 +1,3 @@
-# Tuple Packing
-t = 12345, 54321, 'hello!'
-print(t)  # -> (12345, 54321, 'hello!')
-print(t[2])  # -> hello!
-
-# Sequence Unpack
-x, y, z = t
-print(x, y, z)  # -> 12345 54321 hello!
-
 # Tuples may be nested:
 u = t, (1, 2, 3, 4, 5)
 print(u)  # -> ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))

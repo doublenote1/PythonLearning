@@ -1,19 +1,20 @@
 # === 関数定義基本 ===
 
-# return 文無
+# --- return 文無 ---
 
 def print_fib(n):
+    result = []
     a, b = 0, 1
     while a < n:
-        print(a, end=' ')
+        result.append(a)
         a, b = b, a + b
+    print(result)
 
-print_fib(500)  # -> 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+x = print_fib(100)
+print(x)  # return 文を持たないので None を返す
 print()
 
-print(print_fib(0))  # return 文を持たないので None を返す
-
-# return 文有
+# --- return 文有 ---
 
 def return_fib(n):
     result = []
@@ -22,39 +23,79 @@ def return_fib(n):
         result.append(a)
         a, b = b, a + b
     return result
-
-f100 = return_fib(100)  # return した値を返す
-print(f100)  # -> [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-
-# 関数は代入できる
-
-f = print_fib
-f(100)
-print()  # -> 0 1 1 2 3 5 8 13 21 34 55 89
 print()
 
-# ===デフォルト値===
+x = return_fib(100)  # return した値を返す
+print(x)  # -> [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
 
-# デフォルト引数が設定された引数は省略可能
+# --- 関数の代入 ---
 
-def ask_ok(prompt, answer, retries=4, reminder='Please try again!'):
-    while True:
-        print(prompt)
-        if answer in ('y', 'ye', 'yes'):
-            return True
-        if answer in ('n', 'no', 'nop', 'nope'):
-            return False
-        retries = retries - 1
-        if retries <= 0:
-            return 'Unresolved !'
-        print(reminder)
+def sample():
+    print('sample')
+f = sample
+f()
+print()
 
-print(ask_ok('Do you really want to quit ?', 'y'))
+# --- 複数の戻り値を返す ---
+
+'''
+Pythonにおいて、構文上必要な場合を除き、
+カンマで区切られた値は丸括弧を省略したタプルとみなされる。
+このため、上の例の関数はそれぞれの値を要素とするタプルを返すことになる。
+'''
+
+def return_two_results_as_tuple():
+    return 1, 'string'
+
+results = return_two_results_as_tuple()
+print(results)
+print(type(results))
+
+def return_two_results_as_list():
+    return [1, 'string']
+
+results = return_two_results_as_list()
+print(results)
+print(type(results))
 print()
-print(ask_ok('OK to overwrite the file ?', 'nope'))
+
+# ****** 仮引数の種類 ******
+
+'''
+1. 位置引数
+2. デフォルト引数
+3. 可変長位置引数
+4. 可変長キーワード引数
+5. キーワード専用引数
+'''
+
+# === 位置引数・デフォルト引数 ===
+
+'''
+デフォルト引数が設定された引数は省略可能
+
+デフォルト引数は位置引数の前に置けない
+'''
+
+def calc(price, num, tax=1.08, currency='円'):
+    x = str(round(price * num * tax)) + currency
+    print(x)
+
+calc(180, 3)
+calc(180, 3, 1.05)
+calc(180, 3, 1.05, 'ドル')
 print()
-print(ask_ok('Will you continue ?', '??', 2, 'Come on, only yes or no!'))
+calc(180, 3, tax=1.05)
+calc(180, 3, tax=1.05, currency='ドル')
+calc(180, 3, currency='ドル')
 print()
+calc(price=180, num=3)
+calc(price=180, num=3, tax=1.05)
+calc(price=180, num=3, currency='ドル')
+calc(price=180, num=3, tax=1.05, currency='ドル')
+print()
+
+# === デフォルト値の初期化 ===
 
 # デフォルト値は関数が定義された時点で初期化
 
@@ -90,136 +131,82 @@ print(f(2), end=' -> ')  # -> [2]
 print(f(3))  # -> [3]
 print()
 
-# キーワードで引数の値を指定して設定
+# === 可変長位置引数・可変長キーワード引数 ===
 
-def man(name, male=True, married=True):
-    if male:
-        pronoun, title = "He's", "Mr."
-    elif not male and married:
-        pronoun, title = "She's", "Mrs."
+'''可変長引数は０個以上いくつでも設定可能'''
+
+def man(name, *favorites, **others):
+    size = 9
+
+    str_favorites = ''
+    for favorite in favorites:
+        str_favorites += favorite + ', '
+    str_favorites = str_favorites.rstrip(', ') + '\n'
+
+    for key in others:
+        if len(key) > size:
+            size = len(key)
+
+    if others:
+        str_attributes = []
+        for key in others:
+            str_attributes.append(
+                (key + ':').ljust(size + 2) + str(others[key]))
+        other_attributes = '\n'.join(str_attributes) + '\n'
     else:
-        pronoun, title = "She's", "Miss"
-    if married:
-        m = 'is married.'
-    else:
-        m = 'is not married.'
-    print(pronoun, title, name, '.')
+        other_attributes = ''
 
-man('Seiichi')  # -> He's Mr. Seiichi .
-man('Setsuko', False)  # -> She's Mrs. Setsuko .
-man('Misato', False, False)  # -> She's Miss Misato .
-man('Kiyofumi', married=False)  # -> He's Mr. Kiyofumi .
-man(married=False, male=False, name='Cookie')  # -> She's Miss Cookie .
+    orig_string = ('name:'.ljust(size + 2) + name + '\n'
+                   + 'favorites:'.ljust(size + 2) + str_favorites
+                   + other_attributes)
+    print(orig_string)
 
-# 引数のアンパック
-args = ('Hiromi', False)
-kwargs = {'married': False}
-man(*args, **kwargs)  # -> She's Miss Hiromi .
+man('近藤', 'みっちゃ', 'PC', 'anime', height=169, weight=60, job='opperator')
+man('みっちゃ', height=160, weight=45, job='給食係')
+man('節子')
+
+# === キーワード専用引数 ====
+
+'''
+可変長位置引数以降に設定された仮引数へは、
+キーワード引数でしか設定できない
+
+デフォルト値を指定しなければ、設定必須
+'''
+
+# --- 可変長位置引数がある場合 ---
+
+def concat(*elm, kind, sep='/'):
+    return kind + ': ' + sep.join(elm)
+
+print(concat('C:', 'Users', 'Kiyo', kind='path'))
+print(concat('orange', 'apple', 'lemon', kind='fruits', sep=', '))
+
+# <kind> は必須のキーワード引数
+try:
+    print(concat('cat', 'dog', 'bunny', sep=', '))
+except TypeError as e:
+    print(e)
+
+# --- 可変長位置引数がない場合 ---
+
+def sample(elm1, elm2, *, kind, sep='/'):
+    return kind + ': ' + sep.join([elm1, elm2])
+
+print(sample('word1', 'word2', kind='birds', sep=', '))
 print()
 
-# === 可変長引数(*args, **kwargs) ===
+# === 引数のアンパック ===
 
-def zoo(kind, *arguments, **keywords):
-    print("-- 世界の", kind, " --", sep='')
-    print("-- 世の中には様々な", kind, "が存在する --", sep='')
-    str_ex = ""
-    for arg in arguments:
-        str_ex += arg + "、"
-    str_ex.rstrip("、")
-    print("例えば、", str_ex, "などが挙げられる", sep='')
-    print("-" * 40)
-    for kw in keywords:
-        print(kw, ":", keywords[kw])
+from datetime import datetime
 
-examples = ["パンダ", "チンパンジー", "ゴリラ", "ペリカン"]
-signature = {"監督": "井筒", "脚本": "野島信二"}
-zoo("動物", "猿", "豚", *examples, 社長="近藤清史", 秘書="みっちゃ", **signature)
+print(datetime(*[1988, 5, 22, 0, 45, 30, 309309]))
+print(datetime(**{'year': 1988, 'month': 5, 'day': 22,
+                  'hour': 0, 'minute': 45,
+                  'second': 30, 'microsecond': 309309}))
+print(datetime(1988, *[5, 22], minute=45,
+               **{'second': 30, 'microsecond': 309309}))
+print(datetime(1988, *[5, 22], **{'second': 30, 'microsecond': 309309},
+               minute=45, hour=0))
 print()
 
-# Keyword 引数は可変長引数のあとに指定する
-
-def concat(*args, sep="/"):
-    return sep.join(args)
-
-print(concat("earth", "mars", "venus"))  # -> earth/mars/venus
-print(concat("earth", "mars", "venus", sep="."))  # -> earth.mars.venus
-print()
-
-# === ドキュメンテーション文字列 ====
-
-def my_func():
-    """\
-    docstring-test
-    line1"""
-
-print(my_func.__doc__)
-print(type(my_func.__doc__))
-print()
-
-# reStructuredText(reST)スタイル
-
-def func_rest(arg1, arg2):
-    """Summary line.
-
-    :param arg1: Description of arg1
-    :type arg1: int
-    :param arg2: Description of arg2
-    :type arg2: str
-    :returns: Description of return value
-    :rtype: bool
-    """
-    return True
-
-# NumPyスタイル
-
-def func_numpy(arg1, arg2):
-    """Summary line.
-
-    Extended description of function.
-
-    Parameters
-    ----------
-    arg1 : int
-        Description of arg1
-    arg2 : str
-        Description of arg2
-
-    Returns
-    -------
-    bool
-        Description of return value
-    """
-    return True
-
-# Googleスタイル
-
-def func_google(arg1, arg2):
-    """Summary line.
-
-    Extended description of function.
-
-    Args:
-        arg1 (int): Description of arg1
-        arg2 (str): Description of arg2
-
-    Returns:
-        bool: Description of return value
-
-    """
-    return True
-
-# === 関数アノテーション ===
-
-# function(arg1:型 , arg2:型 = default値 ) -> 戻り値の型
-
-def str_multiply(x: str, y: int = 5) -> str:
-    return x * y
-
-print(str_multiply('Oh! '))
-
-# 関数アノテーションは __annotations__ 属性に辞書型として格納されている
-print(type(str_multiply.__annotations__))  # -> <class 'dict'>
-dic_a = str_multiply.__annotations__
-print(dic_a)  # -> {'x': <class 'str'>, 'y': <class 'int'>, 'return': <class 'str'>}
-print(str_multiply.__annotations__['x'])  # -> <class 'str'>
-print()
