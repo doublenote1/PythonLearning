@@ -2,6 +2,7 @@
 
 # Original List
 stack = [3, 4, 5]
+print(stack)
 
 stack.append(6)
 stack.append(7)

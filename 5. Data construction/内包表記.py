@@ -14,15 +14,12 @@
 {<<キー: 値> の形に仮引数を含んだ式> for <要素の仮引数> in <対象のイテラブル>}
 '''
 
-vec = [-4, -2, 0, 2, 4]
-
 # === リスト ===
 
-# 要素を２倍
-print([x * 2 for x in vec])
+vec = [-3, -2, -1, 0, 1, 2, 3]
 
-# if 文で要素をフィルタリング
-print([x for x in vec if x >= 0])
+# 各要素へ処理
+print([x * 2 for x in vec])
 
 # 関数を利用
 print([abs(x) for x in vec])
@@ -34,14 +31,43 @@ print([word.strip() for word in words])
 # (連番, 連番を２乗した値)のタプルのリスト
 print([(x, x ** 2) for x in range(5)])
 
-vec = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+nest = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 # ネストした要素をならす
-print([num for elem in vec for num in elem])
+print([num for elem in nest for num in elem])
 
 # 式部分の関数のネスト
 from math import pi
 
 print([str(round(pi, i)) for i in range(1, 6)])
+print()
+
+# --- if文で要素をフィルタリング ---
+
+# 条件式
+vec = [-4, -3, -2, -1, 0, 1, 2, 3, 4]
+print([x for x in vec if x >= 0])
+print([x for x in vec if not x >= 0])
+print([x for x in vec if (x > 0) and (x % 2 == 0)])
+print()
+
+# 特定の文字列を含む
+str_l = ['oneXXXaaa', 'twoXXXbbb', 'three999aaa', '000111222']
+print([s for s in str_l if 'XXX' in s])
+print([s for s in str_l if 'XXX' not in s])
+print()
+
+# 特定の文字列で始まる
+print([s for s in str_l if s.startswith('t')])
+print([s for s in str_l if not s.startswith('t')])
+print()
+
+# 特定の文字列で終わる
+print([s for s in str_l if s.endswith('aaa')])
+print([s for s in str_l if not s.endswith('aaa')])
+print()
+
+# 三項演算子で条件を満たす要素に対して処理
+print(['ZZZ' if 'XXX' in x else x for x in str_l])
 print()
 
 # === 集合 ===

@@ -1,4 +1,4 @@
-# === bool 型の論理演算 ===
+# === bool型の論理演算 ===
 
 print(True and True)
 print(False and False)
@@ -18,7 +18,7 @@ print(True and True and True)
 print(False or True and True)
 print()
 
-# === bool 型以外の論理演算 ===
+# === bool型以外の論理演算 ===
 
 '''
 式 x and y は、まず x を評価します
