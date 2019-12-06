@@ -1,10 +1,15 @@
+import os
 import re
 import sys
 
+
 class MyError(Exception):
     pass
+
+
 class Over4DigitsError(MyError):
     pass
+
 
 def div_and_write(div_num1, div_num2, file=None):
     global success_count, total_count
@@ -16,22 +21,27 @@ def div_and_write(div_num1, div_num2, file=None):
         div_num1 = float(div_num1)
         div_num2 = float(div_num2)
         result = str(div_num1 / div_num2)
+        # 第一引数か第二引数が４桁以上ならエラー
         if div_num1 >= 10000 or div_num2 >= 10000:
             raise Over4DigitsError('Over 4 digits')
+        # 第三引数が指定されていれば、ファイルに結果を出力する
         if file is not None:
+            # 第三引数がファイル名の書式になっていなければ、エラー起動
             if re.match(r'^[a-zA-Z][a-zA-Z0-9]*\.([a-z]+|[A-Z]+)$', file):
                 with open(file, 'x') as f:
                     f.write(str(result))
             else:
                 raise NameError('Invalid file name')
-    except FileExistsError as e:
-        err_msg = 'FileExistsError: ' + str(e)
+    # 想定できるエラーの種類を列挙
     except Over4DigitsError as e:
         err_msg = 'Over4DigitsError: ' + str(e)
-    except NameError as e:
-        err_msg = 'NameError: ' + str(e)
     except (ZeroDivisionError, ValueError) as e:
         err_msg = 'ZeroDivisionError or ValueError: ' + str(e)
+    except FileExistsError as e:
+        err_msg = 'FileExistsError: ' + str(e)
+    except NameError as e:
+        err_msg = 'NameError: ' + str(e)
+    # 想定外のエラーが起きた時の処理(Exception)
     except Exception as e:
         err_msg = ''
         err_msg += 'ERROR: Unexpected' + '\n'
@@ -51,8 +61,10 @@ def div_and_write(div_num1, div_num2, file=None):
         print(err_msg)
         print()
 
+
 def trim_err(e):
     return str(type(e)).replace('<class \'', '').replace('\'>', '')
+
 
 path = 'test.txt'
 invalid_path = 'test'
@@ -100,7 +112,7 @@ div_and_write(50, 20, invalid_path)
 # -> NameError: Invalid file name
 
 div_and_write(100, 20, True)
-100 / 20 = 5.0
+# -> 100 / 20 = 5.0
 # -> ERROR: Unexpected
 # ->    str(type(e)) = <class 'TypeError'>
 # ->    str(e.args) = ('expected string or bytes-like object',)
@@ -116,7 +128,4 @@ print('- Succeeded ' + str(success_count) + ' times. -')
 # -> - Succeeded 4 times. -
 print('- Became an error ' + str(total_count - success_count) + ' times. -')
 # -> - Became an error 6 times. -
-
-import os
-
 os.remove(path)

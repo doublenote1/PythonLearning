@@ -1,6 +1,10 @@
 """
 ■ モジュール = パイソン スクリプト ファイル
 
+■ パッケージの種類:
+    通常のパッケージ: モジュールと「__init__.py」を含むディレクトリ
+    名前空間パッケージ: モジュールと「__init__.py」を含まないディレクトリ
+
 ■ オブジェクト = このファイルのコメント内では、
 アクセス可能なモジュール内の関数や変数を示す
 
@@ -11,10 +15,12 @@
 
 # === モジュール ===
 
+"標準ライブラリの呼び出し"
 import math
 
 import module1
 import module2
+
 
 # 呼び出し
 module1.func1()
@@ -27,6 +33,7 @@ print()
 
 from module1 import func1, func2
 
+
 # 呼び出し
 func1()
 func2()
@@ -36,6 +43,7 @@ print()
 # === モジュルー内のオブジェクトを全て ===
 
 from module1 import *
+
 
 # 呼び出し
 func1()
@@ -51,6 +59,7 @@ print()
 
 import package.sub_package.package_module1
 
+
 # 呼び出し
 package.sub_package.package_module1.func1()
 package.sub_package.package_module1.func1()
@@ -59,6 +68,7 @@ del package.sub_package.package_module1
 # ② from <dir>.<dir>… import <module> (複数選択可能)
 
 from package.sub_package import package_module1, package_module2
+
 
 # 呼び出し
 package_module1.func1()
@@ -77,6 +87,7 @@ print()
 
 from package.multiple_import import *
 
+
 # 呼び出し
 included_module.func()
 # --all-- で指定しないものはエラーになる
@@ -93,6 +104,7 @@ print()
 
 from package.sub_package.package_module1 import func1, func2
 
+
 # 呼び出し
 func1()
 func2()
@@ -104,6 +116,7 @@ print()
 # from <dir>.<dir>….<module> import *
 
 from package.sub_package.package_module1 import *
+
 
 # 呼び出し
 func1()
@@ -119,6 +132,7 @@ import module1 as mod
 import package.sub_package.package_module1 as pk
 from package.sub_package import package_module2 as pk2
 
+
 # 呼び出し
 mod.func1()
 pk.func1()
@@ -131,9 +145,9 @@ print()
 from module1 import func1 as f
 from package.sub_package.package_module1 import func1 as pk_f
 
+
 # 呼び出し
 f()
 pk_f()
 del f, pk_f
 print()
-
