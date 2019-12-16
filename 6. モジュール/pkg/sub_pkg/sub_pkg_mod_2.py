@@ -1,13 +1,13 @@
-print('□bbb1_mod2の一番最初')
+print('☆ 「sub_pkg_mod_2」の一番最初')
 
-from .. import aaa1_mod1
-from .mod_1 import bbb1_def1
-
-
-def bbb1_def2():
-    print('□モジュールbbb1_mod2の関数bbb1_def2')
+from .. import pkg_mod
+from .sub_pkg_mod import sub_pkg_mod_func
 
 
-aaa1_mod1.aaa1_def1()
-bbb1_def1()
-print('□モジュールbbb1_mod2の__name__→', __name__)
+def sub_pkg_mod_2_func():
+    print('☆ 関数実行: sub_pkg_mod_2_func in 「sub_pkg_mod_2」モジュール')
+
+
+pkg_mod.pkg_mod_func()
+sub_pkg_mod_func()
+print('☆ 「sub_pkg_mod_2」モジュールの__name__ →', __name__)

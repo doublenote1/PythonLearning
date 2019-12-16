@@ -1,1 +1,1 @@
-print('ディレクトリ「pkg」の中の「__init__.py」')
+print('    __init__.py in 「pkg」ディレクトリ')
