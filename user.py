@@ -1,65 +1,56 @@
-def print_serial(text):
-    print(text, end=', ')
+def make_entry(paths, root='temp'):
 
-def print_newline(text):
-    print('\n', text, sep='', end=', ')
-
-def print_err(e):
-    print(type(e).__name__, e, sep=': ')
-
-def save_file(new_dir_path, new_filename='', new_file_content='', mode='w'):
     import os
-    os.makedirs(new_dir_path, exist_ok=True)
-    if new_filename:
-        with open(os.path.join(new_dir_path, new_filename), mode) as f:
-            f.write(new_file_content)
-
-def method_test():
     import re
+    import shutil
 
-    def reset():
-        global containers
-        containers = [
-            list(range(3)),
-            tuple(range(3)),
-            set(range(3)),
-            'abc',
-        ]
+    if root == '' or root == 'temp':
+        root_path = os.path.join(os.getcwd(), 'temp')
+    else:
+        root_path = os.path.join(os.getcwd(), 'work_space', root)
+    if os.path.exists(root_path):
+        shutil.rmtree(root_path)
+    if type(paths) is str:
+        paths = [paths]
+    for path in paths:
+        match = re.match(r'(.+)\\([^\\]*)$', path)
+        if match:
+            folder = os.path.join(root_path, match.group(1))
+            has_file = match.group(2)
+        else:
+            folder = root_path
+            has_file = True
+        os.makedirs(folder, exist_ok=True)
+        if has_file:
+            with open(os.path.join(root_path, path), 'w') as f:
+                pass
+    return root_path
 
-    methods = [
-        'append(100)',
-        'add(100)',
-        'insert(0,100)',
-        'remove(0)',
-        'discard(0)',
-        'pop()',
-        'clear()',
-        'sort()',
-        'reverse()',
-        'index(1)',
-    ]
 
-    funcs = [
-        'len'
-    ]
+def create_folder(path='temp'):
+    import os
+    import shutil
 
-    for method in methods:
-        reset()
-        print(re.match(r'\w+', method)[0])
-        for container in containers:
-            try:
-                exec('container.' + method)
-                print(container)
-            except Exception as e:
-                print(type(e))
-        print()
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    os.makedirs(path)
 
-    for func in funcs:
-        reset()
-        print(re.match(r'\w+', func)[0])
-        for container in containers:
-            try:
-                exec('print(' + func + '(container))')
-            except Exception as e:
-                print(type(e))
-        print()
+
+def show_entry(path='temp', cut=None):
+    import glob
+    import os
+
+    if not os.path.isdir(path):
+        print('Not Exists!')
+        return
+    if not os.listdir(path):
+        print('Empty!')
+        return
+    if not cut:
+        cut = path + '\\'
+    lst = [x.replace(cut, '')
+           for x in glob.glob(path + '\\**', recursive=True)
+           if x != path + '\\' and (os.path.isfile(x) or not os.listdir(x))]
+    if lst:
+        print(', '.join(lst))
+
