@@ -23,42 +23,52 @@ def a():
         # 関数b内部の名前空間
         m = 1
         t = 'banana'
-        print('in function b:', locals())
-        print()
-        print('in global from b:', globals())
-        print()
+        print(dir())
+        print(globals().keys())
 
-    print('in function a:', locals())
-    print()
+    print(dir())
     b()
 
+
 # globalの名前空間
+
 n = 2
 u = 'cake'
+
 a()
-print('in global:', globals())
-print()
+# ['b', 'l', 's']
+# ['m', 't']
+# dict_keys(['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__annotations__', '__builtins__', '__file__', '__cached__', 'a', 'n', 'u'])
+
+print(globals().keys())
+# dict_keys(['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__annotations__', '__builtins__', '__file__', '__cached__', 'a', 'n', 'u'])
+
 
 # === 明示的なScopeの指定 ===
 
 spam = 0
 
+
 def a():
     # globalを変更しようとしても、localに新しく変数ができてしまう
     spam = 1
 
+
 a()
 print(spam)  # -> 0
+
 
 def b():
     # globalを指定すれば、globalの変数に代入することが可能
     global spam
     spam = 1
 
+
 b()
 print(spam)  # -> 1
 
 spam = 0
+
 
 def a():
     spam = 1
@@ -70,8 +80,9 @@ def a():
 
     return b()
 
+
 print(a())  # -> 0
-print()
+
 
 # Python チュートリアルより
 
@@ -89,11 +100,17 @@ def scope_test():
 
     spam = "test spam"
     do_local()
-    print("After local assignment:", spam)  # -> After local assignment: test spam
+    print("After local assignment:", spam)
     do_nonlocal()
-    print("After nonlocal assignment:", spam)  # -> After nonlocal assignment: nonlocal spam
+    print("After nonlocal assignment:", spam)
     do_global()
-    print("After global assignment:", spam)  # -> After global assignment: nonlocal spam
+    print("After global assignment:", spam)
+
 
 scope_test()
-print("In global scope:", spam)  # -> In global scope: global spam
+# After local assignment: test spam
+# After nonlocal assignment: nonlocal spam
+# After global assignment: nonlocal spam
+
+print("In global scope:", spam)
+# -> In global scope: global spam

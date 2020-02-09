@@ -38,16 +38,13 @@ class Apple:
         self.color = color
         self.display()
 
-
     # === インスタンスメソッドの定義 ===
-
 
     def fresh(self):
         days = (self.__now - self.shipment).days
         temp = float(Apple.__temp)
         freshness = days * Apple.__temp
         return f"入荷してから{days}日、平均{temp}度で保管されており新鮮度は{freshness}です。"
-
 
     def display(self):
         lines = [
@@ -56,15 +53,13 @@ class Apple:
             '色:     ' + str(self.color),
             '出荷日: ' + str(self.shipment).replace('-', '/'),
             self.fresh()
-        ]
+            ]
         for line in lines:
             print(line)
         print()
 
-
     def __date_conv(self, orig):
         return dt.date(orig.year, orig.month, orig.day)
-
 
 # クラス変数参照
 print('クラス名:', Apple.__doc__)  # -> クラス名: Apple class
@@ -96,35 +91,27 @@ print()
 print('==== メンバの追加・変更・削除 ====')
 print()
 
-
 class Example:
 
     # デストラクタ(インスタンス削除時、実行される) ※ 非推奨
     def __del__(self):
         print('デストラクタが呼ばれました')
 
-
     pass
 
-
 Example_instance = Example()
-
 
 def sample_func1():
     print('This is sample_func1!!!')
 
-
 def sample_func2():
     print('This is sample_func2!!!')
-
 
 def sample_func3():
     print('This is sample_func3!!!')
 
-
 def sample_func4():
     print('This is sample_func4!!!')
-
 
 def sample_display():
     members = [
@@ -132,10 +119,9 @@ def sample_display():
         'Example.say_func_name          = ' + str(Example.say_func_name),
         'Example_instance.x             = ' + str(Example_instance.x),
         'Example_instance.say_func_name = ' + str(Example_instance.say_func_name),
-    ]
+        ]
     for member in members:
         print(member)
-
 
 # === 追加 ===
 print('-- 追加 --')
@@ -207,34 +193,26 @@ print()
 print('==== 継承 ====')
 print()
 
-
 class A:
     a = 'A'
-
 
     def say_hello(self):
         print('Hello!')
 
-
 class B:
     b = 'B'
-
 
 class C(A):  # class:A を継承
     c = 'C'
 
-
     def say_hello(self):  # 引数を共有し、内容を上書き
         print('こんにちは!')
-
 
     def say_morning(self):  # 独自メソッド
         print('Good morning!')
 
-
 class D(A, B):  # class:A, class:B を継承
     d = 'D'
-
 
 inst_a = A()
 inst_b = B()
